@@ -41,6 +41,7 @@ for line in data.split("\n"):
         score += 3 + score_lookup.get(draws.get(theirs))
 
     if what == "X":
+        # lose
         score += 0 + score_lookup.get(beats.get(theirs))
 
     if what == "Z":
