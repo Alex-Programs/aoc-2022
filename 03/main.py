@@ -1,7 +1,8 @@
+import string
 with open("input.txt") as f:
     data = f.read().split("\n")
 
-lookup = "abcdefghijklmnopqrstuvwxyz"
+lookup = string.ascii_lowercase
 lookup += lookup.upper()
 
 values = []
