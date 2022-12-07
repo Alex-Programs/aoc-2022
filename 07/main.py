@@ -60,6 +60,8 @@ print(sized)
 
 class State:
     sum = 0
+    toDelete = 9999999999999999999999
+    toFree = 0
 
 def flatten(parent, totalSizes):
     for node in parent.children:
@@ -67,8 +69,10 @@ def flatten(parent, totalSizes):
             flatten(node, totalSizes)
 
     if parent.size < 100000 and len(parent.children) > 0:
-        print(parent.name, parent.size)
         State.sum += int(parent.size)
+
+    if parent.size > State.toFree and parent.size < State.toDelete:
+        State.toDelete = parent.size
 
     return 0
 
@@ -76,7 +80,13 @@ def flatten(parent, totalSizes):
 p1ans = 0
 totalSizes = []
 
+print(sized)
+currentFree = 70000000 - sized.size
+amountToFree = 30000000 - currentFree
+State.toFree = amountToFree
+
 flat = flatten(sized, 0)
 print(State.sum)
+print(State.toDelete)
 
 print(flat)
