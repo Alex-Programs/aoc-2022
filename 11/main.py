@@ -1,7 +1,6 @@
 with open("input.txt") as f:
     data = f.read().split("\n")
 
-
 def process_operation(operation, indata):
     splitted = operation.split(" ")
     match splitted:
@@ -52,7 +51,7 @@ for line in data:
     line = line.strip()
 
     if line == "":
-        print(mid, starting, operation, modtest, on_true, on_false)
+        #print(mid, starting, operation, modtest, on_true, on_false)
         monkeys.append(Monkey(starting, operation, mid, modtest, on_true, on_false))
         continue
 
@@ -80,25 +79,32 @@ for line in data:
         on_false = int(line.split(" ")[-1])
         continue
 
-for tick in range(20):
-    print("___ NEXT ROUND ___")
+from math import prod
+
+cap = prod([x.modtest_value for x in monkeys])
+
+for tick in range(10000):
+    print(tick)
+    #print("___ NEXT ROUND ___")
     for monkey in monkeys:
         if len(monkey.items) == 0:
             continue
 
         for index, item in enumerate(monkey.items):
-            print(f"Monkey {str(monkey.mid)} inspects item", item)
+            #print(f"Monkey {str(monkey.mid)} inspects item", item)
             newdata = process_operation(monkey.operation, item)
-            print("Due to operation", monkey.operation, "the new data is", newdata)
+            #print("Due to operation", monkey.operation, "the new data is", newdata)
             #newdata = int(newdata / 3)
             #print("Due to division by 3, the new data is", newdata)
+            # Adjust for ludicrous numbers
+            newdata = newdata % cap
 
             if monkey.modtest(newdata):
-                print("Monkey throws item", newdata, "to monkey", monkey.on_true_mid, "due to modtest being true")
+                #print("Monkey throws item", newdata, "to monkey", monkey.on_true_mid, "due to modtest being true")
                 target = [x for x in monkeys if x.mid == monkey.on_true_mid][0]
                 target.items.append(newdata)
             else:
-                print("Monkey throws item", newdata, "to monkey", monkey.on_false_mid, "due to modtest being false")
+                #print("Monkey throws item", newdata, "to monkey", monkey.on_false_mid, "due to modtest being false")
                 target = [x for x in monkeys if x.mid == monkey.on_false_mid][0]
                 target.items.append(newdata)
 
@@ -106,10 +112,10 @@ for tick in range(20):
 
         monkey.items = []
 
-        print("__________ NEXT MONKEY __________")
+        #print("__________ NEXT MONKEY __________")
 
-for monkey in monkeys:
-    print(monkey.items)
+#for monkey in monkeys:
+    #print(monkey.items)
 
 most_active = sorted(monkeys, key=lambda x: x.activity, reverse=True)
 
